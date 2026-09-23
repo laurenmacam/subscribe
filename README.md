@@ -36,7 +36,7 @@ example:
 
 ### Assumptions
 
-* The solution uses a list of keywords (book, chocolate, pills, headache, etc.) found in the name to decide whether an item is exempt from the 10% basic tax. Is a simple heuristic and doesn't cover every possible product but it's the simpler solution for the few categories mentioned in the examples.
+* The solution uses a list of keywords (book, chocolate, pills, headache, etc.) found in the name to decide whether an item is exempt from the 10% basic tax. Is a simple heuristic and doesn't cover every possible product but it's the simplest solution for the few categories mentioned in the examples.
 
 * Rounding is applied per individual tax (basic tax and the import duty). Rounding the sum of both could produce a different result.
 
