@@ -8,7 +8,7 @@ module ItemsParser
       next if line.strip.empty?
       result << parse_line(line)
     rescue StandardError => e
-      puts "Failed to parse line: #{index + 1} (\"#{line}\"): #{e.message}"
+      puts "Failed to parse line \"#{line}\": #{e.message}"
     end
 
     result

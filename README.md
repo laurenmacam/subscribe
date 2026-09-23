@@ -40,7 +40,7 @@ example:
 
 * Rounding is applied per individual tax (basic tax and the import duty). Rounding the sum of both could produce a different result.
 
-* Money is handled carefully because of floating-point precision. Adding and multiplying Float values in Ruby can produce small imprecisions (e.g. 14.99 + 1.5 == 16.490000000000002 instead of 16.49), due to how decimal numbers are represented in binary. To avoid this, TaxCalculator rounds the tax result to 2 decimal places right after the "round up to the nearest nickel" step.
+* Rounded up to the nearest 0.05 moves the tax up to the next nickel. But 10% of 14.99 is 1.499, so the tax charged is 1.50. But 10% of 1.50 is exactly 0.15, so the tax stays at 0.15 and should not be pushed up to 0.20. The fix is to keep money out of Float while the rounding decision is being made. `TaxCalculator#tax_for` does the whole calculation in whole cents, where every value is an exact integer:
 
 * BasketItem represents only the data of a basket entry (name, price, quantity, whether it's imported). All tax calculation logic lives in TaxCalculator. Mixing the two into a single class would make the model "aware" of tax rules, making it harder to test and evolve each part independently. If the tax rules has to change (a new rate, a new exemption), the change stays isolated in TaxCalculator, without touching BasketItem, Basket, or the parser.
 

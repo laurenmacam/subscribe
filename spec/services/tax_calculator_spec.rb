@@ -13,6 +13,13 @@ RSpec.describe TaxCalculator do
       item = fake_item(name: "music CD", price: 14.99)
       expect(described_class.new(item).tax_by_category).to eq(1.50)
     end
+
+    it "keeps the tax as is when it already lands on a nickel" do
+      { 1.50 => 0.15, 3.00 => 0.30, 12.00 => 1.20, 14.50 => 1.45 }.each do |price, tax|
+        item = fake_item(name: "music CD", price: price)
+        expect(described_class.new(item).tax_by_category).to eq(tax)
+      end
+    end
   end
 
   describe "#tax_by_imported" do

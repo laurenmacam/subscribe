@@ -1,8 +1,8 @@
 class TaxCalculator
   EXEMPT_KEYWORDS = %w[book chocolate chocolates pills headache].freeze
-  NICKEL = 0.05
-  BASIC_RATE = 0.10
-  IMPORT_RATE = 0.05
+  NICKEL = 5
+  BASIC_RATE = 10
+  IMPORT_RATE = 5
 
   def initialize(item)
     @item = item
@@ -10,12 +10,12 @@ class TaxCalculator
 
   def tax_by_category
     return 0 if exempt?(@item.name)
-    round_up_to_nickel(@item.price * BASIC_RATE)
+    tax_for(BASIC_RATE)
   end
 
   def tax_by_imported
     return 0 unless @item.imported
-    round_up_to_nickel(@item.price * IMPORT_RATE)
+    tax_for(IMPORT_RATE)
   end
 
   def price_with_tax
@@ -23,7 +23,7 @@ class TaxCalculator
   end
 
   def total_price
-    price_with_tax * @item.quantity
+    (price_with_tax * @item.quantity).round(2)
   end
 
   private
@@ -32,7 +32,10 @@ class TaxCalculator
     EXEMPT_KEYWORDS.any? { |kw| name.downcase.include?(kw) }
   end
 
-  def round_up_to_nickel(amount)
-    ((amount / NICKEL).ceil * NICKEL).round(2)
+  def tax_for(rate)
+    price_in_cents = (@item.price * 100).round
+    nickels = (price_in_cents * rate).ceildiv(100 * NICKEL)
+
+    nickels * NICKEL / 100.0
   end
 end
